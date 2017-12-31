@@ -1,0 +1,51 @@
+.contentAddMoney {
+	background-color: #eaf0f2;
+	margin-top: 10%;
+}
+
+.bankTitle {
+	margin-top: 10px;
+	text-align: center;
+	font-size: larger;
+	color: RED;
+}
+
+.inline {
+	padding-top: 15px;
+}
+
+.message {
+	text-align: center;
+	font-size: 150%;
+	width: 80%;
+	margin: auto;
+	style-display: none;
+	color: RED;
+}
+
+.lblReceiver, .lblAmount {
+	padding-top: 5px;
+	text-align: right;
+}
+
+.prefix_amount {
+	padding-left: 15px;
+	padding-top: 5px
+}
+
+.errmsg {
+	text-align: center;
+	color: RED;
+}
+
+button {
+	max-width: 150px;
+	min-width: 100px;
+	height: 40px;
+	margin: 10px 10px;
+}
+
+.listButton {
+	width: 100%;
+	text-align: center;
+}

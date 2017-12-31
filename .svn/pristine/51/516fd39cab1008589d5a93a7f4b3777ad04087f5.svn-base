@@ -1,0 +1,72 @@
+.contentAddMoney{
+	margin-top:10%;
+}
+.bankTitle {
+	text-align: center;
+	font-size: larger;
+	color: RED;
+}
+
+.copyright {
+	margin-top: 9%;
+	text-align: center;
+	font-size: large;
+}
+
+.message {
+	text-align: center;
+	font-size: 150%;
+	width: 80%;
+	margin: auto;
+	style-display: none;
+}
+
+.amount {
+	margin-top: 15px;
+}
+
+.lblReceiver, .lblAmount {
+	float: left;
+	margin-left: 15%;
+	font-size: 180%;
+}
+
+.txtReceiver {
+	margin-top: 5%;
+}
+
+.txtAmonut, .txtReceiver {
+	width: 50%;
+	margin-left: 30%;
+}
+
+#txtAmonut, #txtReceiver {
+	height: 25px;
+	width: 100%;
+}
+
+button {
+	/* width: calc(80%/ 3); */
+	height: 30px;
+	float: left;
+	width:100%;
+}
+
+.listButton {
+	margin-top: 30px;
+	width: 50%;
+	margin-left: 30%;
+	margin-bottom: 152px;
+}
+
+body{
+	background-color:#eaf0f2;
+}
+
+.notify, #errmsg{
+	color: red;
+}
+.row {
+     margin-right: 0;
+     margin-left: 0;
+}

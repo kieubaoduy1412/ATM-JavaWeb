@@ -1,0 +1,33 @@
+.contentWelcome {
+	background-color: #eaf0f2;
+	margin-top: 10%;
+}
+h1 {
+    font-size: 32px;
+    color: dodgerblue;
+}
+.optionButton {
+	text-align: center;
+}
+
+h3, .bankTitle {
+	text-align: center;
+}
+
+.bankTitle {
+	color: RED;
+}
+
+.msgHello {
+	color: Green;
+}
+
+button {
+	min-width: 200px;
+	height: 40px;
+	margin: 20px 20px;
+}
+
+#errmsg {
+	color: red;
+}

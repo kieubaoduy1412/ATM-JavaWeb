@@ -1,0 +1,23 @@
+$(document).ready(function() {
+
+	$('#select').on('click', function() {
+		$.ajax({
+			type : 'GET',
+			url : 'login'
+
+		}).success(function(data) {
+			$('#content').html(data);
+		});
+	});
+
+	$('#import').on('click', function() {
+		$.ajax({
+			type : 'GET',
+			url : 'import'
+
+		}).success(function(data) {
+			$('#content').html(data);
+		});
+
+	});
+});

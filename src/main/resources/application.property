@@ -1,0 +1,13 @@
+#Database Connection Information
+app.database.url=jdbc:mysql://172.20.5.19:3306/ATMDB
+app.database.username=client
+app.database.password=123456
+# sql stament for project
+dnb.gcs.sql.getInfToLogin=SELECT AccountID,UserName,Balance FROM account WHERE AccountID = ? AND Password = ?
+dnb.gcs.sql.updateAccountTbl=UPDATE account SET Balance = Balance - ? WHERE AccountId = ?
+dnb.gcs.sql.updateBalanceWithMinus=UPDATE account SET Balance = Balance - ? WHERE AccountId = ?
+dnb.gcs.sql.updateBalanceWithSum=UPDATE account SET Balance = Balance + ? WHERE AccountId = ?
+dnb.gcs.sql.getAccountIDWithCondition=SELECT AccountId FROM account WHERE AccountId = ? AND	Balance > ? LIMIT 1
+dnb.gcs.sql.getAccountID=SELECT AccountId FROM account WHERE AccountId = ? LIMIT 1;
+dnb.gcs.sql.getUserName=SELECT UserName FROM account WHERE AccountId = ? LIMIT 1;
+dnb.gcs.sql.updateTranSactionDetail=INSERT INTO trans_detail (AccountID, ReceiverID, Type, Amount, Description) VALUES (?,?,?,?,?)

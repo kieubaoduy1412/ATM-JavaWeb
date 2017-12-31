@@ -1,0 +1,176 @@
+function isNumberic(amount) {
+	var count = amount.length;
+	if(count>0){
+		for ( var i = 0; i < amount.length; i++ )
+		{
+			var e = amount.charAt(i);
+			if ((parseInt(e) >= 0) && (parseInt(e) <= 9)) {
+				count--;
+			}
+		}
+		return (count==0 ? true : false);
+	}else{
+		return false;
+	}		
+}
+
+function isValidAccount(account){
+	var isValid = false;
+	var message = "Account is required!";
+	if(account){
+		if(isNumberic(account)){
+			if(account.length == 10){
+				isValid = true;
+			}
+			else{
+				message = "Account must 10 letter!"
+			}
+		}else{
+			message = "Only type numberic";
+		}
+	}	
+	return [isValid, message]
+}
+
+function isValidAmount(amount) {
+	var isValid = false;
+	var message = "Amount is required!";
+	if(amount){
+		if (isNumberic(amount)) {
+			if(parseInt(amount) < 50000){
+				message = "Transfer at least 50,000 vnd";
+			}else{
+				if (amount.length > 9) {
+					message = "Only send less 1 billion";
+				}else{
+					isValid = true;
+				}
+			}							
+		} else {
+			message = "Only type numberic";
+		}
+	}	
+	return [ isValid, message ];
+}
+
+function sendFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val(); 
+	var result_account = isValidAccount(receiverID);
+	if(result_account[0]){
+		var result_amount = isValidAmount(amount);
+		if(result_amount[0]){
+			$.ajax({
+				type : 'POST',
+				url : 'sendMoney',
+				data : {
+					receiverId : receiverID,
+					amount : amount
+				},
+			// dataType : "json"
+			}).success(function(data) {
+						if (data.trim() == "success") {
+							window.location.href = "gotoSuccess";
+						} else {
+							var result = JSON.parse(data);
+							var message = result.transactionModel.messageTransaction;
+							$("#message").html(message);
+						}
+					});
+		}else{
+			$('#message').text(result_amount[1]).show().fadeOut(2000);
+			return false;
+		}
+	}else{
+		$('#message').text(result_account[1]).show().fadeOut(2000);
+		return false;
+	}	
+}
+
+function clearFunction() {
+	$('#txtAmonut').val('');
+	$('#txtReceiver').val('');
+}
+
+function addFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val();
+	if (!receiverID) {
+		$('#message').text('Receiver is required!').show().fadeOut(1500);
+		return false;
+	}
+	var result = isValidAmount(amount);
+	if(result[0]){
+		$.ajax({
+			url : 'addMoney',
+			type : 'POST',
+			data : {
+				accountId : receiverID,
+				amount : amount
+			}
+		}).success(function(data) {
+			$('body').empty();
+			$('body').html(data);
+		});
+	}else{
+		$('#message').text(result[1]).show().fadeOut(2000);
+		return false;
+	}
+}
+
+$(document).ready(function() {
+	$("#txtReceiver").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#message").html("Number Only").show().fadeOut(1500);
+			return false;
+		}
+		var account = $('#txtReceiver').val();
+		if (account.length >= 10) {
+			$("#message").html("Account must 10 letter!").show().fadeOut(1500);
+			return false;
+		}
+	});
+	
+	$("#txtAmonut").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#message").html("Number Only").show().fadeOut(1500);
+			return false;
+		}
+		var amount = $('#txtAmonut').val();
+		if (amount.length >= 9) {
+			$("#message").html("Only send less 1 billion").show().fadeOut(1500);
+			return false;
+		}
+	});
+
+	$("#getAmount").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#message").html("Number Only").show().fadeOut("slow");
+			return false;
+		}
+	});
+});
+
+function withDrawn() {
+	var amount = $('input[name=amount]').val();
+	if (amount > 0) {
+		if (amount > 10000000) {
+			$("#message").html("Amount not over 10 bottle").show().fadeOut(2000,
+					function() {
+						$('input[name=amount]').val('');
+					});
+		} else {
+			$.ajax({
+				type : 'POST',
+				url : 'getMoney',
+				data : {
+					amount : amount
+				},
+			}).success(function(data) {
+				$('body').html(data);
+			});
+		}
+	} else {
+		$("#message").html("Amount is required").show().fadeOut(2000);
+	}
+}

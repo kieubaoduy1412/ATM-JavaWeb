@@ -1,0 +1,38 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<script type="text/javascript" src="resources/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/welcome.js"></script>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/getMoneyPage.css" rel="stylesheet">
+<title>ATM</title>
+</head>
+<body>
+	<div class="getMoneyPageContent">
+		<div class="row">
+			<div class="bankTitle col-sm-12">
+				<h1>EXIT BANK</h1>
+			</div>
+		</div>
+		<div class="message" id="message">
+			<span class="notify"> ${message}</span>
+		</div>
+		<div class="row">
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-4 col-md-4 col-lg-4">
+				<label for="amount">Amount:</label> <input type="text"
+					class="form-control" name="amount" placeholder="Enter amount">
+			</div>
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+		</div>
+		<div class="row">
+			<button type="button" id="btnWithDrawn" class="btn btn-primary"
+				onclick="withDrawn();">WITHDRAWN</button>
+		</div>
+		<jsp:include page="footer.jsp" flush="false"></jsp:include>
+	</div>
+</body>
+</html>

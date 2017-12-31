@@ -1,0 +1,18 @@
+body{
+	text-align: center;
+	background-color:#eaf0f2;
+}
+h1{
+	color: red;
+}
+#btnWithDrawn{
+	margin-top: 10px;
+	padding: 4px 10px;
+	margin-bottom: 260px;
+}
+.row {
+     margin-right: 0;
+}
+.getMoneyPageContent{
+	margin-top: 10%;
+}

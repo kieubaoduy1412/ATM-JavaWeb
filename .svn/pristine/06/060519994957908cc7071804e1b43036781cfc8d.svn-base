@@ -1,0 +1,45 @@
+package dnb.atm.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import javax.servlet.http.HttpSession;
+
+import dnb.atm.service.LoginService;
+
+@Controller
+public class LoginController {
+
+	@Autowired
+	private LoginService loginLogic;
+
+	public LoginController() {
+	}
+
+	/**
+	 * Check if user exits in database and return view page
+	 * 
+	 * @param: username
+	 *             String
+	 * @param: pass
+	 *             String
+	 * @param: session
+	 *             HttpSession
+	 * @return String
+	 * @author duybk.sp
+	 **/
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@RequestParam("username") final String username, @RequestParam("pass") final String pass,
+			HttpSession session) {
+		String accountID = loginLogic.login(username, pass);
+
+		if (accountID != null) {
+			session.setAttribute("SESSION_ACID", accountID);
+			return "welcome";
+		} else {
+			return "error";
+		}
+	}
+}

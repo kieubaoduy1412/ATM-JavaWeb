@@ -1,0 +1,12 @@
+package dnb.atm.service;
+
+import dnb.atm.model.CustomerModel;
+
+public interface WelcomeService {
+	
+	public CustomerModel getMoney(CustomerModel obj, int amount);
+	
+	public int sendMoney(String senderId, int amount, String receiver);
+
+	public int addMoney(String accountId, int amount);
+}

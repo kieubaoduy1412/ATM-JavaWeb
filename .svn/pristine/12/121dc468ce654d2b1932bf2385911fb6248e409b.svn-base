@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ATM</title>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/login.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/jquery1.8.3.js"></script>
+<script type="text/javascript" src="resources/js/login.js"></script>
+</head>
+<body>
+	<div class="bankTitle col-sm-12">
+		<h1>EXIT BANK</h1>
+		<div>${infCustomer.message}</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<label for="usr">Name:</label> <input type="text"
+				class="form-control" name="username">
+		</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<label for="pwd">Password:</label> <input type="password"
+				class="form-control" name="password">
+		</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="row loginButton">
+		<div class="col-sm-5"></div>
+		<div class="col-sm-2">
+			<button type="button" class="btn btn-primary btnLogin"
+				onclick="login();">Login</button>
+		</div>
+		<div class="col-sm-5"></div>
+	</div>
+
+	<br />
+	<jsp:include page="footer.jsp"></jsp:include>
+</body>
+</html>

@@ -1,0 +1,149 @@
+
+package dnb.atm.service.impl;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import dnb.atm.dao.WelcomeDao;
+import dnb.atm.model.TransactionModel;
+import dnb.atm.service.WelcomeService;
+import dnb.atm.utils.Constants;
+
+@Component
+public class WelcomeServiceImpl implements WelcomeService {
+
+    @Autowired
+    private WelcomeDao welcomeDao;
+
+    private static final Logger logger = LogManager.getLogger(WelcomeServiceImpl.class);
+
+    /**
+     * get Money
+     * 
+     * @param: accountId String
+     * @param: amount int
+     * @return TransactionModel
+     * @author duybk.sp
+     **/
+    @Override
+    public TransactionModel getMoney(String accountId, int amount) {
+        TransactionModel obj = new TransactionModel();
+        if (amount >= Constants.MIN_AMOUNT) {
+            if (amount <= Constants.MAX_AMOUNT) {
+                if (welcomeDao.isEnoughMoney(accountId, amount)) {
+                    try {
+                        obj = welcomeDao.getMoney(accountId, amount);
+                        welcomeDao.storeTransactionDetail(accountId, accountId,
+                                Constants.TYPE_WITHDRAW, amount, obj.getDescriptionTransaction());
+                    } catch (Exception e) {
+                        obj.setMessageTransaction(Constants.FAIL_MSG);
+                        logger.info(e);
+                    }
+                } else {
+                    obj.setMessageTransaction(Constants.NOT_ENOUGH_MONEY);
+                }
+            } else {
+                obj.setMessageTransaction(Constants.AMOUNT_TOO_LARGE);
+            }
+        } else {
+            obj.setMessageTransaction(Constants.LESS_THAN_MIN_AMOUNT);
+        }
+        logger.info(obj.getMessageTransaction());
+        return obj;
+    }
+
+    /**
+     * sendMoney
+     * 
+     * @param receiverId String
+     * @param amount int
+     * @param receiver String
+     * @return String
+     * @author lochl.cz
+     **/
+    @Override
+    public TransactionModel sendMoney(String senderId, int amount, String receiver) {
+        TransactionModel obj = new TransactionModel();
+        if (!senderId.equals(receiver)) {
+            if (welcomeDao.isAccountExist(receiver)) {
+                if (amount >= Constants.MIN_AMOUNT) {
+                    if (amount <= Constants.MAX_AMOUNT) {
+                        if (welcomeDao.isEnoughMoney(senderId, amount)) {
+                            try {
+                                obj = welcomeDao.sendMoney(senderId, amount, receiver);
+                                welcomeDao.storeTransactionDetail(senderId, receiver,
+                                        Constants.TYPE_TRANSFER, amount,
+                                        obj.getDescriptionTransaction());
+                            } catch (Exception e) {
+                                obj.setMessageTransaction(Constants.FAIL_MSG);
+                                logger.info(e);
+                            }
+                        } else {
+                            obj.setMessageTransaction(Constants.NOT_ENOUGH_MONEY);
+                        }
+                    } else {
+                        obj.setMessageTransaction(Constants.AMOUNT_TOO_LARGE);
+                    }
+                } else {
+                    obj.setMessageTransaction(Constants.LESS_THAN_MIN_AMOUNT);
+                }
+            } else {
+                obj.setMessageTransaction(Constants.NOT_FOUND_RECEIVER);
+            }
+        } else {
+            obj.setMessageTransaction(Constants.CANT_SEND_FOR_YOURSELF);
+        }
+        logger.info(obj.getMessageTransaction());
+        return obj;
+    }
+
+    /**
+     * Add money to account with specified amount
+     * 
+     * @param accountId
+     * @param amount
+     * @return integer
+     */
+    @Override
+    public TransactionModel addMoney(final String sender, final String accountId,
+            final int amount) {
+        TransactionModel obj = new TransactionModel();
+        if (welcomeDao.isAccountExist(accountId)) {
+            if (amount >= Constants.MIN_AMOUNT) {
+                if (amount <= Constants.MAX_AMOUNT) {
+                    try {
+                        obj = welcomeDao.addMoney(accountId, amount);
+                        welcomeDao.storeTransactionDetail(sender, accountId, Constants.TYPE_PAYIN,
+                                amount, obj.getDescriptionTransaction());
+                    } catch (Exception e) {
+                        obj.setMessageTransaction(Constants.FAIL_MSG);
+                        logger.info(e);
+                    }
+                } else {
+                    obj.setMessageTransaction(Constants.AMOUNT_TOO_LARGE);
+                }
+            } else {
+                obj.setMessageTransaction(Constants.LESS_THAN_MIN_AMOUNT);
+            }
+        } else {
+            obj.setMessageTransaction(" Account " + accountId + " does not exist");
+        }
+        logger.info(obj.getMessageTransaction());
+        return obj;
+    }
+
+    /**
+     * Get Receiver Name by Account ID
+     * 
+     * @param receiverId String
+     * @return String
+     * @author lochl.cz
+     */
+    @Override
+    public String getReceiverName(String receiverId) {
+        return (Constants.EMPTY != welcomeDao.getNameUser(receiverId)
+                ? welcomeDao.getNameUser(receiverId) : Constants.NOT_FOUND_RECEIVER);
+    }
+}

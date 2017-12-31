@@ -1,0 +1,52 @@
+package dnb.atm.model;
+
+import java.io.Serializable;
+
+public class Customer implements Serializable {
+	private String userName;
+	private String accountID;
+	private String receiverID;
+	private String receriverName;
+	private int balance;
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(String accountIDVal) {
+		this.accountID = accountIDVal;
+	}
+
+	public String getReceiverID() {
+		return receiverID;
+	}
+
+	public void setReceiverID(String receiverID) {
+		this.receiverID = receiverID;
+	}
+
+	public String getReceriverName() {
+		return receriverName;
+	}
+
+	public void setReceriverName(String receriverName) {
+		this.receriverName = receriverName;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+
+}

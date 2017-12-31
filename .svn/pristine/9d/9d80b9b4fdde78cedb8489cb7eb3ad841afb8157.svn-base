@@ -1,0 +1,95 @@
+function sendFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val();
+	if (!receiverID) {
+		$('#errmsg').text('Receiver is required!').show().fadeOut(1500);
+		return false;
+	}
+	if (!amount) {
+		$('#errmsg').text('Amount is required!').show().fadeOut(1500);
+		return false;
+	}
+	var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+	if (numberRegex.test(amount)) {
+		$.post("sendMoney", {
+			receiverId : receiverID,
+			amount : amount
+		}, function(data) {
+			$('body').html(data);
+		});
+	}
+}
+
+function clearFunction() {
+	$('#txtAmonut').val('');
+	$('#txtReceiver').val('');
+}
+
+function addFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val();
+	if (!receiverID) {
+		$('#errmsg').text('Receiver is required!').show().fadeOut(1500);
+		return false;
+	}
+	if (!amount) {
+		$('#errmsg').text('Amount is required!').show().fadeOut(1500);
+		return false;
+	}
+	$.ajax({
+		url : 'addMoney',
+		type : 'POST',
+		data : {
+			accountId : receiverID,
+			amount : amount
+		}
+	}).success(function(data) {
+		$('body').empty();
+		$('body').html(data);
+	});
+}
+
+$(document).ready(function() {
+	$("#txtAmonut").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#errmsg").html("Number Only").show().fadeOut(1500);
+			return false;
+		}
+		var amount = $('#txtAmonut').val();
+		if (amount.length >= 9) {
+			$("#errmsg").html("Only send less 1 billion").show().fadeOut(1500);
+			return false;
+		}
+	});
+
+	$("#getAmount").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#errmsg").html("Number Only").show().fadeOut("slow");
+			return false;
+		}
+	});
+});
+
+function withDrawn() {
+	var amount = $('input[name=amount]').val();
+	if (amount > 0) {
+		if (amount > 10000000) {
+			$("#errmsg").html("Amount not over 10 bottle").show().fadeOut(2000,
+					function() {
+						$('input[name=amount]').val('');
+					});
+		} else {
+			$.ajax({
+				type : 'POST',
+				url : 'getMoney',
+				data : {
+					amount : amount
+				},
+			}).success(function(data) {
+				$('body').html(data);
+			});
+		}
+	} else {
+		$("#errmsg").html("Amount is required").show().fadeOut(2000);
+	}
+}

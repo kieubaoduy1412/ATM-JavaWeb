@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Success Page</title>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/success.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/jquery1.8.3.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/success.js"></script>
+<title>Success</title>
+</head>
+<body>
+	<div>
+		<div class="row" style=" height: 50%;">
+			<div class="col-sm-12" style="text-align: center;">
+				<h1>Success</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12" style="text-align: center;">
+				<p class="successMessage">${transactionModel.messageTransaction}</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2 col-sm-offset-4">
+				<input type="button" id="backWelcome" value="Back"
+					onclick="backHome();" class="btn btn-primary button">
+			</div>
+
+			<div class="col-sm-2 col-sm-offset-0">
+				<input type="button" id="continue" value="Continue"
+					onclick="loadPageAgain('${transactionModel.currentPage}')"
+					class="btn btn-primary">
+			</div>
+
+		</div>
+		
+		<div class="row" style="margin-top: 0px; max-width: 104%">
+			<jsp:include page="footer.jsp" flush="false"></jsp:include>
+		</div>
+	</div>
+</body>
+</html>

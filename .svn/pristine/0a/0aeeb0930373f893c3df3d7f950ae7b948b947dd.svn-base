@@ -1,0 +1,11 @@
+package dnb.atm.service;
+
+import java.net.ConnectException;
+
+import dnb.atm.model.CustomerModel;
+
+public interface LoginService {
+
+	public CustomerModel login(String username, String pass) throws ConnectException;
+	public boolean check(int a,int b);
+}

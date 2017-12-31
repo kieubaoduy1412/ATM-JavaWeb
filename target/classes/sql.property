@@ -1,0 +1,2 @@
+#sql statement for all project
+dnb.gcs.sql.getInfToLogin=SELECT AccountID,UserName,Balance FROM account WHERE AccountID = ? AND Password = ?

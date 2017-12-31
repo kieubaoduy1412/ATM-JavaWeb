@@ -1,0 +1,190 @@
+/*
+ * 
+ * */
+
+package dnb.atm.dao.impl;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import dnb.atm.dao.WelcomeDao;
+
+@Component
+public class WelcomeDaoImpl implements WelcomeDao {
+
+	@Autowired
+	private DataSource dataSource;
+
+	@Autowired
+	private DataSourceTransactionManager transaction;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	// create an log4j instance - loc
+	private static final Logger logger = LogManager.getLogger(WelcomeDaoImpl.class);
+
+	public void setDatasource(DataSource datasource) {
+		this.dataSource = datasource;
+	}
+
+	/**
+	 * getMoney
+	 * 
+	 * @param accountId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @return int
+	 * @author duybk.sp
+	 **/
+	public int getMoney(String accountId, int amount) {
+		String sql = "UPDATE account SET Balance = Balance - ? WHERE AccountId = ?";
+		getMoneyTransactionDetail(accountId, amount);
+		return this.jdbcTemplate.update(sql, new Object[] { amount, accountId });
+	}
+
+	/**
+	 * send money from sender to receiver
+	 * 
+	 * @param senderID
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @return int
+	 * @author lochl.cz
+	 **/
+	@Transactional("transaction")
+	public int sendMoney(String senderID, int amount, String receiver) {
+		String sql_minus = "UPDATE account SET Balance = Balance - ? WHERE AccountId = ?";
+		String sql_add = "UPDATE account SET Balance = Balance + ? WHERE AccountId = ?";
+		int result_minus = this.jdbcTemplate.update(sql_minus, new Object[] { amount, senderID });
+		int result_add = this.jdbcTemplate.update(sql_add, new Object[] { amount, receiver });
+		if (result_minus == 1 && result_add == 1) {
+			logger.info("send success");
+			return 2;
+		} else {
+			logger.info("send fail");
+			return -1;
+		}
+	}
+
+	/**
+	 * check is money enough
+	 * 
+	 * @param accountId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @return boolean
+	 * @author lochl.cz
+	 **/
+	public boolean isEnoughMoney(String accountId, int amount) {
+		String sql = "SELECT AccountId FROM account WHERE AccountId = ? AND	Balance > ? LIMIT 1";
+		String accountID = null;
+		boolean isEnough = false;
+		String log = accountId;
+		try {
+			accountID = this.jdbcTemplate.queryForObject(sql, new Object[] { accountId, amount }, String.class);
+			if (accountID.length() > 0) {
+				isEnough = true;
+				log += " enough money";
+			}
+		} catch (EmptyResultDataAccessException e) {
+			log += "not enough money";
+			isEnough = false;
+		}
+		logger.info(log);
+		return isEnough;
+	}
+
+	/**
+	 * check is receiver account exist
+	 * 
+	 * @param receiverID
+	 *            String
+	 * @return boolean
+	 * @author lochl.cz
+	 **/
+	public boolean isAccountExist(String receiverID) {
+		String sql = "SELECT AccountId FROM account WHERE AccountId = ? LIMIT 1;";
+		String receiver = null;
+		boolean isExist = false;
+		String log = receiverID;
+		try {
+			receiver = this.jdbcTemplate.queryForObject(sql, new Object[] { receiverID }, String.class);
+			if (receiver.length() > 0) {
+				isExist = true;
+				log += "is exist";
+			}
+		} catch (EmptyResultDataAccessException e) {
+			isExist = false;
+			log += "is not exist";
+		}
+		logger.info(log);
+		return isExist;
+	}
+
+	/**
+	 * Add money to account with specified amount
+	 * 
+	 * @param accountId
+	 * @param amount
+	 * @return String
+	 */
+	public int addMoney(String accountId, int amount) {
+		String sql_add = "UPDATE account SET Balance=Balance+? WHERE AccountId=?";
+		int result = 0;
+
+		/* Perform update to Database */
+		result = this.jdbcTemplate.update(sql_add, new Integer(amount), accountId);
+
+		/* Return result */
+		return result;
+	}
+
+	/**
+	 * store the detail of transaction into database
+	 * 
+	 * @param senderId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @author lochl.cz
+	 **/
+	public void storeTransactionDetail(String senderId, int amount, String receiver) {
+		String sql = "INSERT INTO transactiondetail (Time, AccountId, Description) VALUES (now(),?,?)";
+		String description = "send " + amount + " from " + senderId + " to " + receiver;
+		this.jdbcTemplate.update(sql, new Object[] { senderId, description });
+	}
+
+	/**
+	 * storeTransactionDetail
+	 * 
+	 * @param senderId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @author duybk.sp
+	 **/
+	public void getMoneyTransactionDetail(String accountID, int amount) {
+		String sql = "INSERT INTO transactiondetail (Time, AccountId, Description) VALUES (now(),?,?)";
+		String description = accountID + " has get " + amount;
+		jdbcTemplate.update(sql, new Object[] { accountID, description });
+	}
+
+}

@@ -1,0 +1,16 @@
+package dnb.atm.dao;
+
+public interface WelcomeDao {
+	
+	public int getMoney(String accountId, int amount);
+	
+	public int sendMoney(String senderId, int amount, String receiver);
+
+	public boolean isEnoughMoney(String accountId, int amount);
+
+	public boolean isAccountExist(String receiver);
+
+	public int addMoney(String accountId, int amount);
+
+	public void storeTransactionDetail(String senderId, int amount, String receiver);
+}

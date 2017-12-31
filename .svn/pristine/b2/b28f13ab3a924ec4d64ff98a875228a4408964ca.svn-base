@@ -1,0 +1,87 @@
+package dnb.atm.service.impl;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import dnb.atm.dao.WelcomeDao;
+import dnb.atm.dao.impl.WelcomeDaoImpl;
+import dnb.atm.model.CustomerModel;
+import dnb.atm.model.TransactionModel;
+import dnb.atm.service.WelcomeService;
+import dnb.atm.utils.Constants;
+
+@Component
+public class WelcomeServiceImpl implements WelcomeService {
+
+	@Autowired
+	private WelcomeDao welcomeDao;
+	private static final Logger logger = LogManager.getLogger(WelcomeServiceImpl.class);
+
+	/**
+	 * get Money
+	 * 
+	 * @param: accountId
+	 *             String
+	 * @param: amount
+	 *             int
+	 * @return CustomerModel
+	 * @author duybk.sp
+	 **/
+	public CustomerModel getMoney(CustomerModel obj, int amount) {
+		if (welcomeDao.isEnoughMoney(obj.getAccountID(), amount)) {
+			welcomeDao.getMoney(obj, amount);
+		} else {
+			obj.setFlagTransaction(false);
+		}
+		return obj;
+	}
+
+	/**
+	 * sendMoney
+	 * 
+	 * @param receiverId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	public TransactionModel sendMoney(String senderId, int amount, String receiver) {
+		TransactionModel tm = new TransactionModel();
+		tm.setReceiverID(receiver);
+		if (amount >= Constants.MIN_AMOUNT) {
+			if (welcomeDao.isAccountExist(receiver)) {
+				tm.setMessageTransaction(welcomeDao.sendMoney(senderId, amount, receiver));
+				tm.setReceriverName(welcomeDao.getNameUser(receiver));
+			} else {
+				tm.setMessageTransaction(Constants.NOT_FOUND_RECEIVER);
+			}
+		} else {
+			tm.setMessageTransaction(Constants.LESS_THAN_MIN_AMOUNT);
+		}
+		logger.info(tm.getMessageTransaction());
+		return tm;
+	}
+
+	/**
+	 * Add money to account with specified amount
+	 * @param accountId
+	 * @param amount
+	 * @return integer
+	 */
+	public TransactionModel addMoney(final String accountId, final int amount) {
+		TransactionModel obj = new TransactionModel();
+		if(welcomeDao.isAccountExist(accountId)){
+			//return welcomeDao.addMoney(accountId, amount);	
+			obj = welcomeDao.addMoney(accountId, amount);
+		}else{
+			obj.setMessageTransaction(" Account " + accountId + " is not exist");
+		}
+		//return -1;
+		return obj;
+	}
+}

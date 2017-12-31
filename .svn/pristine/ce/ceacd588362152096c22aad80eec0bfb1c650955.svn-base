@@ -1,0 +1,198 @@
+package dnb.atm.controller;
+
+import java.net.ConnectException;
+
+import javax.servlet.http.HttpSession;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.ui.ModelMap;
+
+import dnb.atm.dao.WelcomeDao;
+import dnb.atm.model.CustomerModel;
+import dnb.atm.model.TransactionModel;
+import dnb.atm.service.WelcomeService;
+import junit.framework.Assert;
+
+/***
+ * 
+ * @author phuctd.lt
+ *
+ */
+
+@RunWith(MockitoJUnitRunner.class)
+public class WelcomeControllerTest {
+@Mock
+private WelcomeController welcomeController;
+@Mock
+private WelcomeService welcomeService;
+@Mock
+private HttpSession session;
+@Mock
+private WelcomeDao welcomeDao;
+
+@Test
+public void getMoneyTest1(){
+	int amount = 50000;
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Mockito.when(welcomeDao.isEnoughMoney(customerModel.getAccountID(), amount)).thenReturn(true);
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Your transaction was success");
+	Mockito.when(welcomeService.getMoney(customerModel.getAccountID() , amount)).thenReturn(obj);
+	Assert.assertEquals("Your transaction was success", obj.getMessageTransaction());
+	Mockito.when(welcomeController.getMoney(amount, session, new ModelMap())).thenReturn("success");
+	Assert.assertEquals("success", welcomeController.getMoney(amount, session, new ModelMap()));
+}
+
+@Test
+public void getMoneyTest2(){
+	int amount = 5000;
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Mockito.when(welcomeDao.isEnoughMoney(customerModel.getAccountID(), amount)).thenReturn(false);
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Not enough money");
+	Mockito.when(welcomeService.getMoney(customerModel.getAccountID() , amount)).thenReturn(obj);
+	Assert.assertEquals("Not enough money", obj.getMessageTransaction());
+	Mockito.when(welcomeController.getMoney(amount, session, new ModelMap())).thenReturn("getMoney");
+	Assert.assertEquals("getMoney", welcomeController.getMoney(amount, session, new ModelMap()));
+}
+
+@Test
+public void getMoneyTest3(){
+	int amount = 50000;
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID(null);
+	Assert.assertNull(customerModel.getAccountID());
+	Mockito.when(welcomeController.getMoney(amount, session, new ModelMap())).thenReturn("login");
+	Assert.assertEquals("login", welcomeController.getMoney(amount, session, new ModelMap()));
+}
+
+@Test
+public void addMoneyTest1(){
+	int amount = 50000;
+	String accountID = "0107744763";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Your transaction was success");
+	Mockito.when(welcomeService.addMoney(accountID, amount)).thenReturn(obj);
+	Assert.assertEquals("Your transaction was success", obj.getMessageTransaction());
+	Mockito.when(welcomeController.addMoney(accountID, amount, session, new ModelMap())).thenReturn("success");
+	Assert.assertEquals("success", welcomeController.addMoney(accountID, amount, session, new ModelMap()));
+}
+
+@Test
+public void addMoneyTest2(){
+	int amount = 50000;
+	String accountID = "0107744";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction(" Account " + accountID + " is not exist");
+	Assert.assertEquals(" Account " + accountID + " is not exist", obj.getMessageTransaction());
+	Mockito.when(welcomeController.addMoney(accountID, amount, session, new ModelMap())).thenReturn("addMoney");
+	Assert.assertEquals("addMoney", welcomeController.addMoney(accountID, amount, session, new ModelMap()));
+	
+}
+@Test
+public void addMoneyTest3(){
+	int amount = 50000;
+	String accountID = "0107744763";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID(null);
+	Assert.assertNull(customerModel.getAccountID());
+	Mockito.when(welcomeController.addMoney(accountID, amount, session, new ModelMap())).thenReturn("login");
+	Assert.assertEquals("login", welcomeController.addMoney(accountID,amount, session, new ModelMap()));
+}
+
+@Test
+public void sendMoneyTest1() throws ConnectException{
+	int amount = 50000;
+	String receiverID = "0107744762";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Mockito.when(welcomeDao.isAccountExist(receiverID)).thenReturn(true);
+	Mockito.when(welcomeDao.isEnoughMoney(receiverID, amount)).thenReturn(true);
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Your transaction was success");
+	Mockito.when(welcomeService.sendMoney(customerModel.getAccountID(),amount, receiverID)).thenReturn(obj);
+	Assert.assertEquals("Your transaction was success", obj.getMessageTransaction());
+	Mockito.when(welcomeController.sendMoney(receiverID, amount, session, new ModelMap())).thenReturn("success");
+	Assert.assertEquals("success", welcomeController.sendMoney(receiverID, amount, session, new ModelMap()));
+}
+
+@Test
+public void sendMoneyTest2() throws ConnectException{
+	int amount = 50000;
+	String receiverID = "010774";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Mockito.when(welcomeDao.isEnoughMoney(receiverID, amount)).thenReturn(true);
+	Mockito.when(welcomeDao.isAccountExist(receiverID)).thenReturn(false);
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Receiver not found");
+	Mockito.when(welcomeService.sendMoney(customerModel.getAccountID(),amount, receiverID)).thenReturn(obj);
+	Mockito.when(welcomeController.sendMoney(receiverID, amount, session, new ModelMap())).thenReturn("sendMoney");
+	Assert.assertEquals("sendMoney1", welcomeController.sendMoney(receiverID, amount, session, new ModelMap()));
+}
+
+@Test
+public void sendMoneyTest3() throws ConnectException{
+	int amount = 50000;
+	String receiverID = "0107744762";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744763");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Mockito.when(welcomeDao.isAccountExist(receiverID)).thenReturn(true);
+	Mockito.when(welcomeDao.isEnoughMoney(receiverID, amount)).thenReturn(false);
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Not enough money");
+	Mockito.when(welcomeService.sendMoney(customerModel.getAccountID(),amount, receiverID)).thenReturn(obj);
+	Mockito.when(welcomeController.sendMoney(receiverID, amount, session, new ModelMap())).thenReturn("sendMoney");
+	Assert.assertEquals("sendMoney", welcomeController.sendMoney(receiverID, amount, session, new ModelMap()));
+}
+
+@Test
+public void sendMoneyTest4() throws ConnectException{
+	int amount = 50000;
+	String receiverID = "0107744762";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744762");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Assert.assertEquals(receiverID, customerModel.getAccountID());
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Can not send for yourself");
+	Mockito.when(welcomeService.sendMoney(customerModel.getAccountID(),amount, receiverID)).thenReturn(obj);
+	Mockito.when(welcomeController.sendMoney(receiverID, amount, session, new ModelMap())).thenReturn("sendMoney");
+	Assert.assertEquals("sendMoney", welcomeController.sendMoney(receiverID, amount, session, new ModelMap()));
+}
+
+@Test
+public void sendMoneyTest5() throws ConnectException{
+	int amount = 5000;
+	String receiverID = "0107744763";
+	CustomerModel customerModel = new CustomerModel();
+	customerModel.setAccountID("0107744762");
+	Assert.assertNotNull(customerModel.getAccountID());
+	Mockito.when(welcomeDao.isAccountExist(receiverID)).thenReturn(true);
+	TransactionModel obj = new TransactionModel();
+	obj.setMessageTransaction("Less than min amount");
+	Mockito.when(welcomeService.sendMoney(customerModel.getAccountID(),amount, receiverID)).thenReturn(obj);
+	Mockito.when(welcomeController.sendMoney(receiverID, amount, session, new ModelMap())).thenReturn("sendMoney");
+	Assert.assertEquals("sendMoney", welcomeController.sendMoney(receiverID, amount, session, new ModelMap()));
+}
+}

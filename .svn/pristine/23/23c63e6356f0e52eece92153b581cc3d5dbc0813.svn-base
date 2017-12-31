@@ -1,0 +1,86 @@
+package dnb.atm.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import dnb.atm.dao.LoginDao;
+import dnb.atm.model.Customer;
+
+@Component
+public class LoginDaoImpl implements LoginDao {
+
+	@Autowired
+	private DataSource dataSource;
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+
+	public String getCustomerName() {
+
+		String sql = "SELECT * FROM account LIMIT 1";
+
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			Customer customer = null;
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				customer = new Customer(rs.getString(1));
+			}
+			rs.close();
+			ps.close();
+			return customer.getName();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if user exits in database and return view page
+	 * 
+	 * @param: username
+	 *         String
+	 * @param: pass
+	 *         String
+	 * @return String
+	 * @author duybk.sp
+	 **/
+	public String login(String username, String pass) {
+		String sql = "SELECT AccountID FROM account WHERE AccountID = \'" + username + "\' AND Password = \'" + pass + "\'";
+		Connection conn = null;
+		String accountID = null;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				accountID = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return accountID;
+	}
+
+}

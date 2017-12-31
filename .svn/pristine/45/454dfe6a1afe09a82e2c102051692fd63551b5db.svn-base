@@ -1,0 +1,40 @@
+package dnb.atm.controller;
+
+import javax.servlet.http.HttpSession;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.ui.ModelMap;
+
+import dnb.atm.model.CustomerModel;
+import dnb.atm.service.WelcomeService;
+import junit.framework.Assert;
+
+/***
+ * 
+ * @author phuctd.lt
+ *
+ */
+
+@RunWith(MockitoJUnitRunner.class)
+public class WelcomeControllerTest {
+@InjectMocks
+private WelcomeController welcomeController = new WelcomeController();
+@Mock
+private WelcomeService welcomeService;
+@Mock
+private HttpSession session;
+@Test
+public void testGetMoney(){
+	int amount = 50000;
+	CustomerModel obj = new CustomerModel();
+	obj.setBalance(5);
+	obj.setFlagTransaction(true);
+	Mockito.when(welcomeService.getMoney(new CustomerModel() , amount)).thenReturn(obj);
+	Assert.assertEquals("success", welcomeController.getMoney(amount, session, new ModelMap()));
+}
+}

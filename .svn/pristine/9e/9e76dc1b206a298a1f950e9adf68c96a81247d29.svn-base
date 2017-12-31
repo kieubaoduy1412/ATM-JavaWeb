@@ -1,0 +1,8 @@
+package dnb.atm.service;
+
+import dnb.atm.model.CustomerModel;
+
+public interface LoginService {
+
+	public CustomerModel login(String username, String pass);
+}

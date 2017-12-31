@@ -1,0 +1,26 @@
+function login(){
+	var userName =  $('input[name=username]').val();
+	var pass =  $('input[name=password]').val();
+	if (!userName) {
+		$('#errmsgName').text('Username is required!').show().fadeOut(2000);
+		return false;
+	}
+	if (!pass) {
+		$('#errmsgPass').text('Password is required!').show().fadeOut(2000);
+		return false;
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'login',
+		data:{username : userName,pass : pass},
+		//dataType : "json"
+	}).success(function(data) {
+		if(data.trim() == "welcome"){
+			window.location.href = "gotoWelcomePage";
+		}else{
+			var result = JSON.parse(data);
+			var message = result.infCustomer.message;
+			$("#loginFail").html(message);
+		}
+    });
+}

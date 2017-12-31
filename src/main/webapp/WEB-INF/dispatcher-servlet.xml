@@ -1,0 +1,79 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context         		
+        http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd" >
+        <context:annotation-config />
+<!-- 	<context:property-placeholder location ="classpath:sql.properties" -->
+<!-- 		order="2" ignore-unresolvable="true" ignore-resource-not-found="true" /> -->
+	<context:component-scan base-package="dnb.atm"/>	
+	 <context:component-scan base-package="dnb.atm.controller" />
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="locations" value="classpath:application.property"/>
+	</bean> 
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean name="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="${app.database.url}" />
+		<property name="username" value="${app.database.username}" />
+		<property name="password" value="${app.database.password}" />
+	</bean>
+	<mvc:annotation-driven />
+<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<mvc:resources mapping="/resources/**" location="/resources/"
+		cache-period="31556926" />
+	<!-- Spring security -->
+<!-- 	<security:http pattern="/css/**" security="none"/> -->
+<security:http auto-config="true"  use-expressions="true" >
+
+  <!-- <security:form-login  login-page='/login'  default-target-url="/home"
+         authentication-failure-url="/login?error=true" /> -->
+ <security:intercept-url pattern="/css/**" access="permitAll" />
+<security:intercept-url pattern="/welcome/**" access="hasRole('ADMIN')" />
+<security:intercept-url pattern="/withdrawMoney/**" access="hasRole('ADMIN')" /> 
+<!--     <security:logout logout-success-url="/login" />  -->
+<!-- <security:intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+<security:intercept-url pattern="/home/*" access="ADMIN" />  -->
+<!--  <form-login login-page='/login' username-parameter="accountId" -->
+<!--         password-parameter="password" default-target-url="/welcome" -->
+<!--         authentication-failure-url="/login?authfailed" /> -->
+<!--     <logout logout-success-url="/login?logout" /> -->
+</security:http>
+
+<security:authentication-manager>
+<security:authentication-provider>
+<security:jdbc-user-service data-source-ref="dataSource"
+users-by-username-query="select username,accountId from account where accountId=?"
+ authorities-by-username-query="select u1.UserName, u2.role from account u1, trans_detail u2 where u1.accountId = u2.accountId and username  =?"/> 
+</security:authentication-provider>
+</security:authentication-manager> 
+
+</beans>

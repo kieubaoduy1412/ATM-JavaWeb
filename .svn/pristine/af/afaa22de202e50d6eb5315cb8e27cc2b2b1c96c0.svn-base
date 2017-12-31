@@ -1,0 +1,22 @@
+package dnb.atm.utils;
+/**
+ * common function for project
+ * @author phuctd.lt
+ */
+public class CommonFuntion {
+	
+/**
+ * check empty with parameter is object
+ * @author phuctd.lt
+ */
+public static final boolean isEmpty(Object obj){
+	return obj == null;
+}
+
+/**
+ * check empty with parameter is String
+ */
+public static final boolean isEmpty(String str){
+	return str == null || Constants.EMPTY.equals(str.trim());
+}
+}

@@ -1,0 +1,10 @@
+package dnb.atm.service;
+
+public interface WelcomeService {
+	
+	public int getMoney(String accountId, int amount);
+	
+	public int sendMoney(String senderId, int amount, String receiver);
+
+	public int addMoney(String accountId, int amount);
+}

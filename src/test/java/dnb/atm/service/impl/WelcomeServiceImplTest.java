@@ -1,0 +1,45 @@
+package dnb.atm.service.impl;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import dnb.atm.dao.WelcomeDao;
+import dnb.atm.model.CustomerModel;
+
+@RunWith(MockitoJUnitRunner.class)
+public class WelcomeServiceImplTest {
+	@Mock
+	private WelcomeServiceImpl welcomeService;// = new WelcomeServiceImpl();
+	@Mock
+	private WelcomeDao dao;
+	@Test
+	public void getMoneyTest1() {
+		String accountID = "";
+		int amount = 50000;
+		Mockito.when(dao.isEnoughMoney(accountID, amount)).thenReturn(true);
+		Assert.assertEquals(null, welcomeService.getMoney(accountID, amount));
+	}
+	@Test
+	public void addMoneyTest() {
+		CustomerModel obj = new CustomerModel();
+		obj.setAccountID("0107744763");
+		String accountID = "";
+		int amount = 50000;
+		String sender = "Duy";
+		Mockito.when(dao.isAccountExist(accountID)).thenReturn(true);
+		Assert.assertEquals(null,
+				welcomeService.addMoney(sender, accountID, amount));
+	}
+	/*
+	 * @Test public void sendMoney(){ CustomerModel obj = new CustomerModel();
+	 * obj.setAccountID(""); String receiverId ="0107744763"; int amount =
+	 * 50000; TransactionModel transactionModel = new TransactionModel();
+	 * transactionModel.setMessageTransaction("Can not send for yourself");
+	 * Assert.assertSame(transactionModel,
+	 * welcomeService.sendMoney(obj.getAccountID(),amount,receiverId)); }
+	 */
+}

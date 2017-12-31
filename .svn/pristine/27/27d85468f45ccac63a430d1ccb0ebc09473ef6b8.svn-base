@@ -1,0 +1,14 @@
+package dnb.atm.utils;
+/**
+ * common function for project
+ * @author phuctd.lt
+ */
+public class CommonFuntion {
+	
+public static final boolean isEmpty(Object obj){
+	return obj == null;
+}
+public static final boolean isEmpty(String str){
+	return str == null || Constants.EMPTY.equals(str.trim());
+}
+}

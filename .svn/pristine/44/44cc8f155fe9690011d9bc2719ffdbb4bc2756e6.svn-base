@@ -1,0 +1,31 @@
+function login(){
+	$('#loginFail').text('').show();
+	var userName =  $('input[name=username]').val();
+	var pass =  $('input[name=password]').val();
+	if (!userName) {
+		if(!pass){
+			$('#loginFail').text('Account ID and Password are required!').show();
+		} else {
+			$('#loginFail').text('Account ID is required!').show();
+		}
+		return;
+	}
+	if (!pass) {
+		$('#loginFail').text('Password is required!').show();
+		return;
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'login',
+		data:{username : userName,pass : pass},
+		//dataType : "json"
+	}).success(function(data) {
+		if(data.trim() == "welcome"){
+			window.location.href = "home";
+		}else{
+			var result = JSON.parse(data);
+			var message = result.infCustomer.message;
+			$("#loginFail").html(message);
+		}
+    });
+}

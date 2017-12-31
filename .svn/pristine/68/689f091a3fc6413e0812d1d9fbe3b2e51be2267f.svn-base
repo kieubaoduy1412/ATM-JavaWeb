@@ -1,0 +1,6 @@
+package dnb.atm.service;
+
+public interface LoginService {
+
+	public String login(String username, String pass);
+}

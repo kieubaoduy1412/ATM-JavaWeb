@@ -1,0 +1,32 @@
+function sendFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val();
+	$.post("sendMoney", {
+		receiverId : receiverID,
+		amount : amount
+	}, function(data) {
+		$('body').html(data);
+	});
+}
+
+function clearFunction(){
+	$('#txtAmonut').val('');
+	$('#txtReceiver').val('');
+}
+
+$(document).ready(function(){
+	$('#addMoney').click(function(){
+		var receiverID = $('#receiver').val();
+		var amount = $('#amount').val();
+		$.ajax({
+			url: 'addMoney',
+			type: 'POST',
+		    data: {
+		    		accountId : receiverID,
+		    		amount : amount
+				}
+		}).success(function(data) {
+			$('body').html(data);
+		});
+	})
+});

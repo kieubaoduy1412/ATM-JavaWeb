@@ -1,0 +1,16 @@
+body{
+	background-color:#eaf0f2;
+}
+
+#backWelcome, #continue{	
+	width: 200px;
+	text-align: center;
+	color: silver;
+}
+
+.successMessage{
+	text-align: center;
+	font-family: sans-serif;
+	font-style: italic;
+	font-weight: 100;	 
+}

@@ -1,0 +1,44 @@
+body{
+	background-color:#eaf0f2;
+}
+.bankTitle h1{
+	color: red;
+}
+.username{
+	margin-top: 10px;
+	text-align: center;
+	font-size: 20px;
+}
+.password{
+	text-align: center;
+	margin-top: 10px;
+	font-size: 20px;
+}
+.btnLogin{
+    padding: 4px 10px;
+    width: 100%;
+    
+}
+.loginButton{
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 170px;
+}
+.bankTitle{
+	text-align: center;
+}
+.row{
+	margin-top:10px;
+	text-align: center
+}
+@media ( min-width : 992px) {
+	.md-text-right {
+		text-align: right;
+	}
+	.md-text-left {
+		text-align: left;
+	}
+	.label-md-150 {
+		width: 80px;
+	}
+}

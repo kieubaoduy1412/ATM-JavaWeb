@@ -1,0 +1,61 @@
+function sendFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val();
+	var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+	if (numberRegex.test(amount)) {
+		$.post("sendMoney", {
+			receiverId : receiverID,
+			amount : amount
+		}, function(data) {
+			$('body').html(data);
+		});
+	}
+}
+
+function clearFunction() {
+	$('#txtAmonut').val('');
+	$('#txtReceiver').val('');
+}
+
+$(document).ready(function() {
+	$('#addMoney').click(function() {
+		var receiverID = $('#receiver').val();
+		var amount = $('#amount').val();
+		$.ajax({
+			url : 'addMoney',
+			type : 'POST',
+			data : {
+				accountId : receiverID,
+				amount : amount
+			}
+		}).success(function(data) {
+			$('body').html(data);
+		});
+	})
+
+	//Only input number, remove if character typing is not number
+	$("#txtAmonut").keypress(function(e) {
+		// if the letter is not digit then display error and don't type anything
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			// display error message
+			$("#errmsg").html("Number Only").show().fadeOut("slow");
+			return false;
+		}
+	});
+});
+
+function withDrawn(){
+	var amount = $('input[name=amount]').val();
+	if(amount > 0){
+		$.ajax({
+			type : 'POST',
+			url : 'getMoney',
+			data:{amount : amount},
+		}).success(function(data) {
+			$('body').html(data);
+	    });
+	} else {
+		alert("Xin hay nhap so tien")
+	}
+}
+

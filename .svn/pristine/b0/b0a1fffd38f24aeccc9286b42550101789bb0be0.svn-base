@@ -1,0 +1,76 @@
+<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<!--   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+<!--   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+<script type="text/javascript" src="resources/js/jquery1.8.3.js"></script> 
+</head>
+<body>
+<div class="container">
+<h1>Success</h1>
+<div id ="getMoney"></div>
+<div id="successMessage">${message}</div>
+<div id="money">${amount}</div>
+<div id="receiver">${receiverID}</div>
+<div id="getMoney">${ObjForGetMoney.userName} GetMoney: ${ObjForGetMoney.balance}</div>
+		<input type="button" id="backWelcome" value="Back" class="btn btn-success">
+		<input type="button" class="continue" value="Continue" class="btn btn-success">
+		</div>
+</body>
+<script type="text/javascript">
+var currentPage = ${objToView.currentPage};
+alert(currentPage);
+alert('xx');
+</script>
+</html>
+ --%>
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Success Page</title>
+<link href="resources/css/success.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/success.js"></script>
+
+<style type="text/css">
+#backWelcome, #continue {
+	max-width: 200px;
+	width: 200px;
+}
+
+#backWelcome {
+	position: absolute;
+	float: right;
+	left: 35%;
+}
+</style>
+<title>Success</title>
+
+</head>
+<body>
+	<div class="container">
+		<h1>${transactionModel.messageTransaction}</h1>
+		<div class="row">
+			<div class="col-sm-6">
+				<input type="button" id="backWelcome" value="Back"
+					class="btn btn-success button">
+			</div>
+			<div class="col-sm-6">
+				<input type="button" id="continue" value="Continue"
+					class="btn btn-success"> <input type="hidden"
+					id="currentPage" value="${transactionModel.currentPage}">
+			</div>
+
+		</div>
+	</div>
+	<script type="text/javascript" src="resources/js/jquery1.8.3.js"></script>
+	<script type="text/javascript" src="resources/js/success.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+package dnb.atm.controller;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import dnb.atm.model.CustomerModel;
+import dnb.atm.model.TransactionModel;
+import dnb.atm.service.WelcomeService;
+import dnb.atm.utils.CommonFuntion;
+import dnb.atm.utils.Constants;
+
+@Controller
+public class WelcomeController {
+
+	@Autowired
+	private WelcomeService welcomeService;
+	private static final Logger logger = LogManager.getLogger(WelcomeController.class);
+
+	/**
+	 * get Money
+	 * 
+	 * @param amount
+	 *            String
+	 * @param session
+	 *            HttpSession
+	 * @return String
+	 * @author duybk.sp
+	 **/
+	@RequestMapping(Constants.GET_MONEY)
+	public String getMoney(@RequestParam("amount") final int amount, HttpSession session, ModelMap model) {
+		CustomerModel obj = (CustomerModel) session.getAttribute(Constants.SESSION_ACOUNT_ID);
+		obj = welcomeService.getMoney(obj, amount);
+		String message = Constants.SYSTEM_FAIL;
+		String page = Constants.GET_MONEY_PAGE;
+		if (obj.isFlagTransaction() && obj.getBalance() > 0) {
+			model.addAttribute("ObjForGetMoney", obj);
+			message = Constants.SUCCESS;
+			page = Constants.SUCCESS;
+		} else {
+			message = Constants.NOT_ENOUGH_MONEY;
+		}
+		model.addAttribute(Constants.MESSAGE, message);
+		return page;
+	}
+
+	/**
+	 * sendMoney
+	 * 
+	 * @param receiverId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	@RequestMapping(Constants.SEND_MONEY)
+	public String sendMoney(@RequestParam("receiverId") String receiverId, @RequestParam("amount") int amount,
+			HttpSession session, ModelMap modelmap) {
+		String page = Constants.SEND_MONEY_PAGE;
+		if (!CommonFuntion.isEmpty(session.getAttribute(Constants.SESSION_ACOUNT_ID))) {
+			CustomerModel sender = (CustomerModel) session.getAttribute(Constants.SESSION_ACOUNT_ID);
+			TransactionModel transactionModel = welcomeService.sendMoney(sender.getAccountID(), amount, receiverId);
+			if (transactionModel.getMessageTransaction().trim().indexOf(Constants.SUCCESS) > 1) {				
+				modelmap.addAttribute(Constants.CUSTOMER_MODEL, sender);
+				page = Constants.SUCCESS;
+			}
+			modelmap.addAttribute(Constants.TRANSACTION_MODEL, transactionModel);
+			logger.info("Send " + amount + " from " + sender.getAccountID() + " to " + receiverId
+					+ ": " + transactionModel.getMessageTransaction());
+		} else {
+			page = Constants.LOGIN;
+		}
+		return page;
+	}
+
+	/**
+	 * This action return to the Add money page
+	 * 
+	 * @return String
+	 * @author tamvn.ax
+	 */
+	@RequestMapping(Constants.LINK_ADD_MONEY_PAGE)
+	public String gotoAddMoneyScreen() {
+		return Constants.ADD_MONEY_PAGE;
+	}
+
+	/**
+	 * This action perform add money to account of user
+	 * 
+	 * @param accountId
+	 * @param amount
+	 * @return String
+	 * @author tamvn.ax
+	 */
+	@RequestMapping(Constants.ADD_MONEY)
+	public String addMoney(@RequestParam("accountId") final String accountId, @RequestParam("amount") final int amount,
+			HttpSession session, ModelMap model) {
+		CustomerModel obj = (CustomerModel) session.getAttribute(Constants.SESSION_ACOUNT_ID);
+		String page = Constants.ADD_MONEY_PAGE;
+
+		if (!CommonFuntion.isEmpty(obj.getAccountID())) {
+			TransactionModel transactionModel = new TransactionModel();
+			transactionModel = welcomeService.addMoney(accountId, amount);
+
+			if (transactionModel.getMessageTransaction().trim().indexOf("success") > 1) {
+				model.addAttribute(Constants.TRANSACTION_MODEL, transactionModel);
+				page = Constants.SUCCESS;
+			}
+		} else {
+			page = Constants.LINK_LOGIN_PAGE;
+		}
+
+		return page;
+	}
+
+	/**
+	 * gotoSendMoney
+	 * 
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	@RequestMapping(Constants.GO_TO_SEND_MONEY_PAGE)
+	public String gotoSendMoney() {
+		return Constants.SEND_MONEY_PAGE;
+	}
+
+	/**
+	 * gotoWelcomeScreen
+	 * 
+	 * @return String
+	 * @author duybk.sp
+	 **/
+	@RequestMapping(Constants.LINK_GET_MONEY_PAGE)
+	public String gotoGetMoneyScreen() {
+		return Constants.GET_MONEY_PAGE;
+	}
+
+	/**
+	 * gotoWelcomeScreen
+	 * 
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	@RequestMapping(Constants.GO_TO_WELCOME_PAGE)
+	public String gotoWelcomeScreen(HttpSession session,ModelMap model) {
+		model.addAttribute(Constants.INF_CUST,session.getAttribute(Constants.SESSION_ACOUNT_ID));
+		return Constants.WELCOME;
+	}
+
+	/**
+	 * cancelAction
+	 * 
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	@RequestMapping(Constants.CANCEL_ACTION)
+	public String cancelAction(HttpSession session) {
+		session.removeAttribute(Constants.SESSION_ACOUNT_ID);
+		return Constants.LOGIN;
+	}
+}

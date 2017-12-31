@@ -1,0 +1,35 @@
+package dnb.atm.dao.impl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+
+import dnb.atm.dao.LoginDao;
+import dnb.atm.dao.mapper.AccountMapper;
+import dnb.atm.model.CustomerModel;
+
+@Component
+public class LoginDaoImpl implements LoginDao {
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	/**
+	 * Check if user exits in database and return view page
+	 * @param: username
+	 *             String
+	 * @param: pass
+	 *             String
+	 * @return String
+	 * @author duybk.sp
+	 **/
+	public CustomerModel login(String username, String pass) {
+		String sql = "SELECT AccountID,UserName,Balance FROM account WHERE AccountID = ? AND Password = ?";
+		try {
+			return  this.jdbcTemplate.queryForObject(sql, new Object[] { username, pass }, AccountMapper.getAccount());
+		} catch (EmptyResultDataAccessException e) {
+			return new CustomerModel();
+		}
+	}
+
+}

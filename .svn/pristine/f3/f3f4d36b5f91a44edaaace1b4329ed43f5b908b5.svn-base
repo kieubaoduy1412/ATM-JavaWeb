@@ -1,0 +1,62 @@
+package dnb.atm.utils;
+
+public class Constants {
+	
+	/** The Constant SUCCESS. */
+	public static final String SUCCESS = "success";
+
+	/** The Constant MESSAGE. */
+	public static final String MESSAGE = "message";
+	
+	/** The Constant WELCOME. */
+	public static final String WELCOME = "welcome";
+	
+	/** The Constant ERROR. */
+	public static final String ERROR = "error";
+	
+	/** The Constant ADD_MONEY. */
+	public static final String ADD_MONEY = "/addMoney";
+	
+	/** The Constant LINK_ADD_MONEY_PAGE. */
+	public static final String LINK_ADD_MONEY_PAGE = "/gotoAddMoney";
+
+	/** The Constant LINK_ADD_MONEY_PAGE. */
+	public static final String LINK_GET_MONEY_PAGE = "/gotoGetMoney";
+	
+	/** The Constant LOGIN_PAGE. */
+	public static final String LINK_LOGIN_PAGE = "/login";
+	
+	/** The Constant ADD_MONEY_PAGE. */
+	public static final String ADD_MONEY_PAGE = "addMoney";
+	
+	/** The Constant SEND_MONEY_PAGE. */
+	public static final String SEND_MONEY_PAGE = "sendMoney";
+	
+	/** The Constant SEND_MONEY_PAGE. */
+	public static final String GET_MONEY_PAGE = "getMoney";
+	
+	/** The Constant SEND_MONEY. */
+	public static final String SEND_MONEY = "/sendMoney";
+	
+	/** The Constant GET_MONEY. */
+	public static final String GET_MONEY = "/getMoney";
+	
+	/** The Constant SESSION_ACOUNT_ID. */
+	public static final String SESSION_ACOUNT_ID = "SESSION_ACID";
+	
+	/** The Constant RECEIVER_ID. */
+	public static final String RECEIVER_ID = "receiverID";
+	
+	/** The Constant AMOUNT. */
+	public static final String AMOUNT = "amount";
+	
+	/**The Constant NOT_ENOUGH_MONEY. */
+	public static final String NOT_ENOUGH_MONEY = "Not enough money";
+	
+	/**The Constant NOT_FOUND_RECEIVER. */
+	public static final String NOT_FOUND_RECEIVER = "Receiver not found";
+	
+	/**The Constant SYSTEM_FAIL. */
+	public static final String  SYSTEM_FAIL = "System fail";
+	
+}

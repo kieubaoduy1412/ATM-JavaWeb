@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Welcome</title>
+<script type="text/javascript" src="resources/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/welcome.js"></script>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/welcome.css" rel="stylesheet">
+
+</head>
+
+<body>
+	<div class="contentWelcome">
+		<div class="bankTitle"><h1>EXIT BANK</h1></div>
+		<h1>Hello ${infCustomer.userName}</h1>
+		<h1></h1>
+		<div class="optionButton ">
+			<div class="row btn-group line_one">
+				<div class="btnAddMoney ">
+					<a href="gotoAddMoney"><button class="btn btn-primary col-sm-2" type="button">ADD MONEY</button></a>
+				</div>
+				<div class="btnGetMoney">
+					<a href="gotoGetMoney"><button class="btn btn-primary col-sm-2" type="button">GET MONEY</button></a>
+				</div>
+			</div>
+			<div class="row btn-group line_second">
+				<div class="btnSendMoney">
+					<a href="gotoSendMoney"><button class="btn btn-primary col-sm-2" type="button">SEND MONEY</button></a>
+				</div>
+				<div class="btnCancel">
+					<a href="cancelAction"><button class="btn btn-primary col-sm-2" type="button">CANCEL</button></a>
+				</div>
+			</div>
+		</div>
+		<jsp:include page="footer.jsp"></jsp:include>
+		<!-- <div class="copyright">Copyright 2016</div> -->
+<%-- 		<jsp:include page="footer.jsp"></jsp:include> --%>
+	</div>
+</body>
+</html>

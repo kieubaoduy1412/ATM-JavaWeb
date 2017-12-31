@@ -1,0 +1,9 @@
+package dnb.atm.dao;
+
+import dnb.atm.model.Customer;
+
+public interface LoginDao {
+	
+	public Customer login(String username, String pass) ;
+
+}

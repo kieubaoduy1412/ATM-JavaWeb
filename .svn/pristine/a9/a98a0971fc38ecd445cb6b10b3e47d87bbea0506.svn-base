@@ -1,0 +1,5 @@
+package dnb.atm.dao.impl;
+
+public class LoginDaoImplTest {
+
+}

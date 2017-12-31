@@ -1,0 +1,67 @@
+.contentAddMoney {
+	background-color: #eaf0f2;
+	margin-top: 10%;
+}
+h1 {
+    font-size: 32px;
+    color: dodgerblue;
+}
+.bankTitle {
+	margin-top: 10px;
+	text-align: center;
+	font-size: larger;
+	color: RED;
+}
+.inline {
+	padding-top: 15px;
+}
+
+.form {
+	text-align: center;
+}
+.message {
+	text-align: center;
+	font-size: 130%;
+	width: 80%;
+	margin: auto;
+	style-display: none;
+	color: RED;
+}
+#errmsg {
+	color: RED;
+}
+
+button {
+	max-width: 150px;
+	min-width: 100px;
+	height: 40px;
+	margin: 10px 10px;
+}
+.box{
+	text-align: center;
+	padding-top: 20px;
+}
+.form-horizontal .form-group {
+	margin-right: 0px;
+	margin-left: 0px;
+}
+.row{
+	margin-right: 0px;
+	margin-left: 0px;
+}
+@media(min-width:767px){
+  .listButton {
+	margin-left: 80px
+	}
+	.col-sm-offset-3 {
+    margin-left: 29%;
+	}
+}
+@media(max-width:767px){
+	button {
+	min-width: 200px;
+    height: 40px;
+    margin: 20px 20px;
+	}
+}
+

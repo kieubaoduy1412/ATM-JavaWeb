@@ -1,0 +1,7 @@
+package dnb.atm.dao;
+
+public interface LoginDao {
+	
+	public String login(String username, String pass) ;
+
+}

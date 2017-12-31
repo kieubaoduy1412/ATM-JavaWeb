@@ -1,0 +1,18 @@
+package dnb.atm.dao;
+
+import dnb.atm.model.CustomerModel;
+
+public interface LoginDao {
+	
+	/**
+	 * Check if user exits in database and return view page
+	 * @param: username
+	 *             String
+	 * @param: pass
+	 *             String
+	 * @return String
+	 * @author duybk.sp
+	 **/
+	public CustomerModel login(String username, String pass) ;
+
+}

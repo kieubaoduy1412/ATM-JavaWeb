@@ -1,0 +1,84 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>ATM</title>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/login.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/jquery1.8.3.js"></script>
+<script type="text/javascript" src="resources/js/login.js"></script>
+</head>
+<body>
+	<div class="bankTitle">
+		<h1>DNB ATM SYSTEM</h1>
+		<div id="loginFail"></div>
+	</div>
+	<div class="box">
+		<div class="form-horizontal">
+			<div class="form-group txtUserName">
+				<label class="col-xs-12 col-sm-2 col-sm-offset-3 control-label"
+					for="txtReceiver">Name</label>
+				<div class="col-xs-12 col-sm-3">
+					<input class="form-control" id="txtAmonut" type="text"
+						name="username">
+				</div>
+			</div>
+			<span id="errmsgName"></span>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-sm-offset-3 control-label"
+					for="txtAmonut">Password</label>
+				<div class="col-xs-12 col-sm-3">
+					<input class="form-control" id="txtAmonut" type="password"
+						name="password">
+				</div>
+			</div>
+			<span id="errmsgPass"></span>
+			<div class="listButton">
+				<div class="row btn-group ">
+					<a onclick="login();">
+						<button class="btn btn-primary btnLogin" type="button">Login</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row"><jsp:include page="footer.jsp"></jsp:include>
+	</div>
+
+
+	<!-- <div class="bankTitle">
+		<h1>DNB ATM</h1>
+		<div id="loginFail"></div>
+	</div>
+	<div class="form">
+		<div class="col-sm-10 col-sm-offset-1">
+			<div class="inline">
+				<div class="form-inline form-group form-group-sm Receiver row">				
+		      		<label class="label-md-150" for="txtReceiver">Name</label>	      			      		
+		      		<input class="form-control" id="txtReceiver" type="text" name="username">	      		
+		    	</div>		
+		  		<div>
+			  		<div class="form-inline form-group form-group-sm Amonut row">			  		
+			      		<label class="label-md-150" for="txtAmonut">Password</label>		      		
+			      		<input class="form-control" id="txtAmonut" type="password" name="password">		      		
+			    	</div>
+		    	<span id="errmsg"></span>
+		    	</div>
+	  		</div>
+			<div class="listButton">
+				<div class="row btn-group ">				
+					<a onclick="login();">
+					<button class="btn btn-primary btnLogin" type="button" >Login</button></a>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+</body>
+</html>

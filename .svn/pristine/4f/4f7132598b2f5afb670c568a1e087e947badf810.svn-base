@@ -1,0 +1,30 @@
+.contentWelcome {
+	background-color: #eaf0f2;
+	margin-top: 10%;
+}
+
+.optionButton {
+	text-align: center;
+}
+
+h1, .bankTitle {
+	text-align: center;
+}
+
+.bankTitle {
+	color: RED;
+}
+
+.msgHello {
+	color: Green;
+}
+
+button {
+	min-width: 200px;
+	height: 40px;
+	margin: 20px 20px;
+}
+
+#errmsg {
+	color: red;
+}

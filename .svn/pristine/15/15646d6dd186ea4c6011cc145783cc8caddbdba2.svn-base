@@ -1,0 +1,5 @@
+package dnb.atm.service.impl;
+
+public class WelcomeServiceImplTest {
+
+}

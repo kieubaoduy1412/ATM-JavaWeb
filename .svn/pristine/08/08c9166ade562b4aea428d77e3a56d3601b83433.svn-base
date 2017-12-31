@@ -1,0 +1,5 @@
+#backWelcome, #continue{	
+	width: 200px;
+	text-align: center;
+	color: silver;
+}

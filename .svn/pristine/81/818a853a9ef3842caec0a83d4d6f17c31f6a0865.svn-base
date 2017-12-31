@@ -1,0 +1,13 @@
+function loadPageAgain(exp){
+	if (exp == "gotoAddMoney") {
+		window.location.href = exp;
+	} else if (exp == "sendMoneyPage") {
+		window.location.href = "transferMoney";
+	} else {
+		window.location.href = "gotoGetMoney";
+	}
+}
+
+function backHome(){
+	window.location.href = "home";
+}

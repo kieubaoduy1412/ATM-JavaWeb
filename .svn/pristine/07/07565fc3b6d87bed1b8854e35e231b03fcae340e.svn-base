@@ -1,0 +1,227 @@
+function isNumberic(amount) {
+	var count = amount.length;
+	if(count>0){
+		for ( var i = 0; i < amount.length; i++ )
+		{
+			var e = amount.charAt(i);
+			if ((parseInt(e) >= 0) && (parseInt(e) <= 9)) {
+				count--;
+			}
+		}
+		return (count==0 ? true : false);
+	}else{
+		return false;
+	}		
+}
+
+function isValidAccount(account){
+	var isValid = false;
+	var message = "Account is required!";
+	if(account){
+		if(isNumberic(account)){
+			if(account.length == 10){
+				isValid = true;
+			}
+			else{
+				message = "Account must 10 letter!"
+			}
+		}else{
+			message = "Only type numberic";
+		}
+	}	
+	return [isValid, message]
+}
+
+function isValidAmount(amount) {
+	var isValid = false;
+	var message = "Amount is required!";
+	if(amount){
+		if (isNumberic(amount)) {
+			if(parseInt(amount) < 50000){
+				message = "Transfer at least 50,000 vnd";
+			}else{
+				if (amount.length > 9) {
+					message = "Only send less 1 billion";
+				}else{
+					isValid = true;
+				}
+			}							
+		} else {
+			message = "Only type numberic";
+		}
+	}	
+	return [ isValid, message ];
+}
+
+function sendFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val().replace(/,/g, '');
+	var resultAccount = isValidAccount(receiverID);
+	if(resultAccount[0]){
+		var resultAmount = isValidAmount(amount);
+		if(resultAmount[0]){
+			$.ajax({
+				type : 'POST',
+				url : 'sendMoney',
+				data : {
+					receiverId : receiverID,
+					amount : amount
+				},
+			// dataType : "json"
+			}).success(function(data) {
+				if (data.trim() == "success") {
+					window.location.href = "gotoSuccess";
+				} else {
+					var result = JSON.parse(data);
+					var message = result.transactionModel.messageTransaction;
+					$("#message").html(message);
+				}
+			});
+		}else{
+			$('#message').text(resultAmount[1]).show();
+			return false;
+		}
+	}else{
+		$('#message').text(resultAccount[1]).show();
+		return false;
+	}	
+}
+
+function clearFunction() {
+	$('#txtAmonut').val('');
+	$('#txtAmount').val('');
+	$('#txtReceiver').val('');
+}
+
+function addFunction() {
+	var receiverID = $('#txtReceiver').val();
+	var amount = $('#txtAmonut').val().replace(/,/g, '');
+	var resultAccount = isValidAccount(receiverID);
+	if(resultAccount[0]){
+		var result = isValidAmount(amount);
+		if(result[0]){
+			$.ajax({
+				url : 'addMoney',
+				type : 'POST',
+				data : {
+					accountId : receiverID,
+					amount : amount
+				}
+			}).success(function(data) {
+				$('body').empty();
+				$('body').html(data);
+			});
+		}else{
+			$('#message').text(result[1]).show();
+			return false;
+		}
+	}else{
+		$('#message').text(resultAccount[1]).show();
+		return false;
+	}	
+}
+
+function isValidAmountDrawn(amount){
+	var isValid = false;
+	var message = "Invalid amount!";
+	if(amount){
+		if(isNumberic(amount)){
+			if(parseInt(amount)>=50000){
+				if(parseInt(amount)<=10000000){
+					isValid = true;
+				}else{
+					message = "Amount not over 10 million";
+				}
+			}else{
+				message = "Amount at least 50,000 vnd";
+			}			
+		}else{
+			message = "Only type numberic";
+		}
+	}else{
+		message = "Amount is required!";
+	}
+	return [isValid,message];
+}
+
+function withDrawn() {
+	var amount = $('input[name=amount]').val();
+	var result = isValidAmountDrawn(amount);
+	if(result[0]){
+		$.ajax({
+			type : 'POST',
+			url : 'getMoney',
+			data : {
+				amount : amount
+			},
+		}).success(function(data) {
+			$('body').html(data);
+		});
+	}else{
+		$("#message").text(result[1]).show();
+		return false;
+	}
+}
+
+$(document).ready(function() {
+	$("#txtReceiver").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#message").text("Number Only").show();
+			return false;
+		}else{
+			var account = $('#txtReceiver').val();
+			if (account.length >= 10) {
+				$("#message").text("Account must 10 letter!").show();
+				return false;
+			}else{
+				$("#message").text("");
+			}
+		}		
+	});
+	
+	$("#txtAmonut").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#message").text("Number Only").show();
+			return false;
+		}else{
+			var amount = $('#txtAmonut').val();
+			if (amount.length >= 9) {
+				$("#message").text("Only send less 1 billion").show();
+				return false;
+			}else{
+				$("#message").text("");
+			}
+		}	
+	});
+	
+	$("#txtAmonut").keyup(function(e) {
+		$(this).val(function(index, value) {
+		    return value.replace(/\D/g, "")
+		    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		    ;
+		});
+	});
+	
+	$("#txtAmount").keyup(function(e) {
+		$(this).val(function(index, value) {
+		    return value.replace(/\D/g, "")
+		    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		    ;
+		});
+	});
+	
+	//With Drawn Money
+	$("#txtAmount").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#message").text("Number Only").show();
+			return false;
+		}else{
+			if(parseInt($('#txtAmount').val())>10000000) {
+				$("#message").text("Only withdrawn less 10 million").show();
+				return false;
+			}else{
+				$("#message").text("");
+			}
+		}
+	});
+});

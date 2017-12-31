@@ -1,0 +1,46 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Send Money</title>
+<script type="text/javascript" src="resources/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/sendMoney.css" rel="stylesheet">
+</head>
+<body>
+<div class="contentSendMoney">
+	<div class="bankTitle"><h1>EXIT BANK</h1></div>
+	<div class="message" id="message" >${transactionModel.messageTransaction}</div>	
+	<div class="form">
+	<div class="col-lg-8 col-lg-offset-2">
+		<div class="inline">
+			<div class="form-inline form-group Receiver">
+	      		<label for="txtReceiver">Focused</label>
+	      		<input class="form-control" id="txtReceiver" type="text">
+	    	</div>		
+	  		<div>
+		  		<div class="form-inline form-group Amonut">
+		      		<label for="txtAmonut">Focused</label>
+		      		<input class="form-control" id="txtAmonut" type="text">
+		    	</div>
+	    	<span id="errmsg"></span>
+	    	</div>
+  		</div>
+		<div class="listButton">
+			<div class="row btn-group ">
+				<a onclick='sendFunction();'><button class="btn btn-primary" type="button" >Send</button></a>
+				<a onclick='clearFunction();'><button class="btn btn-primary" type="button" >Clear</button></a>
+				<a href="gotoWelcomePage"><button class="btn btn-primary" type="button">Home</button></a>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<jsp:include page="footer.jsp"></jsp:include>
+</div>
+</body>
+<script type="text/javascript" src="resources/js/welcome.js"></script>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/getMoney.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/welcome.js"></script>
+<script type="text/javascript" src="resources/js/success.js"></script>
+<title>Get Money</title>
+</head>
+<body>
+	<div class="contentGetMoney">
+		<div class="bankTitle">
+			<h1>DNB ATM SYSTEM</h1>
+		</div>
+		<div class="message" id="message">
+			<span class="notify"> ${transactionModel.messageTransaction}</span>
+		</div>
+
+		<div class="box">
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-sm-offset-3 control-label"
+						for="txtAmount">Amount</label>
+					<div class="col-xs-12 col-sm-2">
+						<input class="form-control" id="txtAmount" type="text" name="amount">
+					</div>
+				</div>
+				<span id="errmsg"></span>
+				<div class="listButton">
+					<div class="btn-group ">
+						<div class="col-xs-12 col-sm-3"><a onclick='withDrawn();'><button class="btn btn-primary" type="button">Agree</button></a> </div>
+						<div class="col-xs-12 col-sm-3"><a onclick='clearFunction();'><button class="btn btn-primary" type="button">Clear</button></a></div> 
+						<div class="col-xs-12 col-sm-3"><a href="home"><button class="btn btn-primary" type="button">Home</button></a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<jsp:include page="footer.jsp" flush="false"></jsp:include>
+	</div>
+</body>
+</html>

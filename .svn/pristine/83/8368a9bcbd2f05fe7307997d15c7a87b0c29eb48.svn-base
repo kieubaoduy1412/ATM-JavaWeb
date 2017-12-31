@@ -1,0 +1,16 @@
+$(document).ready(function() {
+	$('.btnGetMoney').on('click',function(){
+		var amount = $('input[name=amount]').val();
+		if(amount > 0){
+			$.ajax({
+				type : 'POST',
+				url : 'getMoney',
+				data:{amount : amount},
+			}).success(function(data) {
+				$('body').html(data);
+		    });
+		} else {
+			alert("Xin hay nhap so tien")
+		}
+	});
+});

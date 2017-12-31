@@ -1,0 +1,75 @@
+package dnb.atm.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import dnb.atm.dao.WelcomeDao;
+import dnb.atm.model.Customer;
+import dnb.atm.service.WelcomeService;
+
+@Component
+public class WelcomeServiceImpl implements WelcomeService {
+
+	@Autowired
+	private WelcomeDao welcomeDao;
+
+	/**
+	 * get Money
+	 * @param: accountId
+	 *         String
+	 * @param: amount
+	 *         int
+	 * @return int
+	 * @author duybk.sp
+	 **/
+/*	public Customer getMoney(String accountId, int amount) {
+		if (welcomeDao.isEnoughMoney(accountId, amount)) {
+			int result = welcomeDao.getMoney(accountId, amount);
+			return result;
+		} else {
+			return 0;		//not enough money
+		}
+	}*/
+	public Customer getMoney(Customer obj, int amount) {
+		if (welcomeDao.isEnoughMoney(obj.getAccountID(), amount)) {
+			welcomeDao.getMoney(obj, amount);
+		} else {
+			obj.setFlagTransaction(false);
+		}
+		return obj;
+	}
+
+	public int sendMoney(String senderId, int amount, String receiver) {
+		int result = 0;		
+		if (welcomeDao.isAccountExist(receiver)) {
+			if (welcomeDao.isEnoughMoney(senderId, amount)) {
+				result = welcomeDao.sendMoney(senderId, amount, receiver);
+				welcomeDao.storeTransactionDetail(senderId,amount,receiver);
+			} else {
+				result = 1;	//not enough money
+			}
+		} else {
+			result = 0;		//receiver not found
+		}
+		return result;
+	}
+
+	/**
+	 * Add money to account with specified amount
+	 * @param accountId
+	 * @param amount
+	 * @return integer
+	 */
+	public int addMoney(final String accountId, final int amount) {
+		
+		/* If receiver account is exist*/
+		if(welcomeDao.isAccountExist(accountId)){
+			
+			// Perform add money
+			return welcomeDao.addMoney(accountId, amount);		 
+		}
+		
+		// Return result in case receiver account not exist
+		return -1;
+	}
+}

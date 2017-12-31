@@ -1,0 +1,48 @@
+body {
+	background-color: #eaf0f2;
+	margin-top: 10%;
+}
+
+.bankTitle {
+	text-align: center;
+	font-size: larger;
+	color: RED;
+}
+
+.inline {
+	padding-top: 15px;
+}
+
+.form {
+	text-align: center;
+}
+
+.message {
+	text-align: center;
+	font-size: 150%;
+	width: 80%;
+	margin: auto;
+	style-display: none;
+}
+
+button {
+	min-width: 200px;
+	height: 40px;
+	margin: 20px 20px;
+}
+
+.listButton {
+	width: 100%;
+}
+
+@media ( min-width : 992px) {
+	.md-text-right {
+		text-align: right;
+	}
+	.md-text-left {
+		text-align: left;
+	}
+	.label-md-150 {
+		width: 80px;
+	}
+}

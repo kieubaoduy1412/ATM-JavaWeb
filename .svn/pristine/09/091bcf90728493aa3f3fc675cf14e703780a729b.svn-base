@@ -1,0 +1,19 @@
+function login(){
+	var userName =  $('input[name=username]').val();
+	var pass =  $('input[name=password]').val();
+	$.ajax({
+		type : 'POST',
+		url : 'login',
+		data:{username : userName,pass : pass},
+		//dataType : "json"
+	}).success(function(data) {
+		if(data.trim() == "welcome"){
+			window.location.href = "gotoWelcomePage";
+		}else{
+			var result = JSON.parse(data);
+			var message = result.infCustomer.message;
+			$("#loginFail").html(message);
+		}
+		
+    });
+}

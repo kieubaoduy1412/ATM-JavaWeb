@@ -1,0 +1,20 @@
+package dnb.atm.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import dnb.atm.dao.LoginDao;
+import dnb.atm.model.Customer;
+import dnb.atm.service.LoginService;
+
+@Component
+public class LoginServiceImpl implements LoginService {
+
+	@Autowired
+	private LoginDao loginDao;
+
+	public Customer login(String username, String pass) {
+		return loginDao.login(username,pass);
+	}
+
+}

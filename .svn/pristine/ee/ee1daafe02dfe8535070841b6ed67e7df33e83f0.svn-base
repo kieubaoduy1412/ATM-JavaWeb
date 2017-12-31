@@ -1,0 +1,55 @@
+body {
+	background-color: #eaf0f2;
+	margin-top: 10%;
+}
+
+.bankTitle {
+	text-align: center;
+	font-size: larger;
+	color: RED;
+}
+
+.inline {
+	padding-top: 15px;
+}
+
+.form {
+	text-align: center;
+}
+#loginFail{
+	text-align: center;
+	font-size: 150%;
+	width: 80%;
+	margin: auto;
+	style-display: none;
+	color: RED;
+}
+button {
+	min-width: 100px;
+	height: 40px;
+	margin-top: 10px;
+}
+
+.listButton {
+	width: 100%;
+}
+.box{
+	text-align: center;
+	padding-top: 20px;
+}
+.form-horizontal .form-group {
+	margin-right: 0px;
+	margin-left: 0px;
+}
+.row{
+	margin-right: 0px;
+	margin-left: 0px;
+}
+@media (min-width: 768px){
+	.col-sm-offset-3 {
+    margin-left: 29%;
+	}
+}
+.btnLogin{
+	margin-left: 15px
+}

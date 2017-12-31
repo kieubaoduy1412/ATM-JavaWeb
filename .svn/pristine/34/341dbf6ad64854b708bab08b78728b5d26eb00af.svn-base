@@ -1,0 +1,28 @@
+package dnb.atm.dao;
+
+import dnb.atm.model.Customer;
+
+public interface WelcomeDao {
+	
+	/**
+	 * getMoney
+	 * 
+	 * @param obj
+	 *        Customer
+	 * @param amount
+	 *        int
+	 * @return Customer
+	 * @author duybk.sp
+	 **/
+	public Customer getMoney(Customer obj, int amount);
+	
+	public int sendMoney(String senderId, int amount, String receiver);
+
+	public boolean isEnoughMoney(String accountId, int amount);
+
+	public boolean isAccountExist(String receiver);
+
+	public int addMoney(String accountId, int amount);
+
+	public void storeTransactionDetail(String senderId, int amount, String receiver);
+}

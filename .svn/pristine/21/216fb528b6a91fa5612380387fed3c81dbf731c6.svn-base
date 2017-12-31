@@ -1,0 +1,50 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Send Money</title>
+<script type="text/javascript" src="resources/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/sendMoney.css" rel="stylesheet">
+</head>
+<body>
+	<div class="contentSendMoney">
+		<div class="bankTitle"><h1>DNB ATM SYSTEM</h1></div>
+		<div class="message" id="message" >${transactionModel.messageTransaction}</div>	
+		<div class="form">
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="inline">
+					<div class="form-inline form-group form-group-sm Receiver row">				
+			      		<label class="col-md-3 col-md-offset-3 col-sm-3 col-sm-offset-3 lblReceiver" for="txtReceiver">Receiver Account</label>	      			      		
+			      		<input class="col-md-3 col-md-offset-0 form-control" id="txtReceiver" type="text">	      		
+			    	</div>		
+			  		<div>
+				  		<div class="form-inline form-group form-group-sm Amonut row">			  		
+				      		<label class="col-md-3 col-md-offset-3 col-sm-3 col-sm-offset-3 lblAmount" for="txtAmonut">Amount</label>		      		
+				      		<input class="col-md-3 col-md-offset-0 form-control" id="txtAmonut" type="text">
+				      		<label class="prefix_amount">VND</label>		      		
+				    	</div>
+			    		<div class="errmsg"><span id="errmsg"></span></div>
+			    	</div>
+		  		</div>
+				<div class="listButton">
+					<div class="row btn-group ">
+						<a onclick='sendFunction();'><button class="btn btn-primary" type="button" >Send</button></a>
+						<a onclick='clearFunction();'><button class="btn btn-primary" type="button" >Clear</button></a>
+						<a href="gotoWelcomePage"><button class="btn btn-primary" type="button">Home</button></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<jsp:include page="footer.jsp"></jsp:include>
+		</div>
+		
+	</div>
+</body>
+<script type="text/javascript" src="resources/js/welcome.js"></script>
+</html>

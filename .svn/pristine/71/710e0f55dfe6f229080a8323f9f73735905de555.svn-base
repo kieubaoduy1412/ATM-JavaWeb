@@ -1,0 +1,24 @@
+/*$('#continue').click(function() {
+	var exp = '${transactionModel.currentPage}';
+	alert(exp);
+	if (exp == "gotoAddMoney") {
+		window.location.href = exp;
+	} else if (exp == "sendMoneyPage") {
+		window.location.href = "gotoSendMoney";
+	} else {
+		window.location.href = "gotoGetMoney";
+	}
+});*/
+
+$('#backWelcome').click(function() {
+	window.location.href = "gotoWelcomePage";
+})
+function loadPageAgain(exp){
+	if (exp == "gotoAddMoney") {
+		window.location.href = exp;
+	} else if (exp == "sendMoneyPage") {
+		window.location.href = "gotoSendMoney";
+	} else {
+		window.location.href = "gotoGetMoney";
+	}
+}

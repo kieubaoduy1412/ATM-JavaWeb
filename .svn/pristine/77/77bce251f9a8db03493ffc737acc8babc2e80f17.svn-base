@@ -1,0 +1,63 @@
+.contentWelcome {
+	height: 400px;
+	width: 850px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+h1{
+	text-align: center;
+	color: RED;
+}
+.bankTitle {
+	margin-top: 10px;
+	text-align: center;
+	font-size: larger;
+	color: RED;
+}
+
+.copyright {
+	text-align: center;
+	font-size: large;
+}
+
+.optionButton {
+	width: 400px;
+	height: 80px;
+	margin-top: 10%;
+	margin-left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+button {
+	width: 150px;
+	height: 30px
+}
+
+.btnAddMoney {
+	position: absolute;
+	/* top: 0%; */
+	left: 20%;
+	transform: translate(-50%, 0%);
+}
+
+.btnGetMoney {
+	position: absolute;
+	top: 100%;
+	left: 20%;
+	transform: translate(-50%, -100%);
+}
+
+.btnSendMoney {
+	position: absolute;
+	/* top: 0%; */
+	left: 80%;
+	transform: translate(-50%, 0%);
+}
+
+.btnCancel {
+	position: absolute;
+	top: 100%;
+	left: 80%;
+	transform: translate(-50%, -100%);
+}

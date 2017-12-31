@@ -1,0 +1,52 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Money</title>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/success.js"></script>
+<link href="resources/css/addMoney.css" rel="stylesheet">
+<title>Add Money</title>
+</head>
+<body>
+	<div class="contentAddMoney">
+		<div class="bankTitle"><h1>DNB ATM SYSTEM</h1></div>
+		<div class="message" id="message">${message}</div>
+		<div class="box">
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-sm-offset-3 control-label"
+						for="txtReceiver">Receiver</label>
+					<div class="col-xs-12 col-sm-3">
+						<input class="form-control" id="txtReceiver" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-sm-offset-3 control-label"
+						for="txtReceiver">Amount</label>
+					<div class="col-xs-12 col-sm-3">
+						<input class="form-control" id="txtAmonut" type="text">
+					</div>
+				</div>
+				<div>
+					<span id="errmsg"></span>
+				</div>
+				<div class="listButton">
+					<div class="btn-group ">
+						<div class="col-xs-12 col-sm-3 btn"><a onclick='addFunction();'><button class="btn btn-primary" type="button">Add</button></a> </div>
+						<div class="col-xs-12 col-sm-3 btn"><a onclick='clearFunction();'><button class="btn btn-primary" type="button">Clear</button></a></div> 
+						<div class="col-xs-12 col-sm-3 btn"><a href="gotoWelcomePage"><button class="btn btn-primary" type="button">Home</button></a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row"><jsp:include page="footer.jsp"></jsp:include>
+		</div>
+
+	</div>
+	<script type="text/javascript" src="resources/js/welcome.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Send Money</title>
+<link href="resources/css/addMoney.css" rel="stylesheet">
+<script type="text/javascript" src="resources/js/jquery1.8.3.js"></script>
+</head>
+<body>
+<div class="contentSendMoney">
+		<div class="bankTitle"><h1>EXIT BANK</h1></div>
+		<div class="message" id="message" >${message}</div>
+		<div class="receiver">
+			<div class="lblReceiver">
+				Receiver
+			</div>
+			<div class="txtReceiver">
+				<input type="text" name="txtReceiver" id="receiver">
+			</div>
+		</div>
+		<div class="amount">
+			<div class="lblAmount">
+				Amount
+			</div>
+			<div class="txtAmonut">
+				<input type="text" name="txtAmonut" id="amount">
+			</div>
+		</div>
+		<div class="listButton">
+			<button type="button" id="addMoney" class="btn btn-primary">Add</button>
+			<a href="#"><button type="button">Clear</button></a>
+			<a href="#"><button type="button">Home</button></a>
+		</div>
+		<div class="copyright">Copyright 2016</div>
+	</div>
+</body>
+<script type="text/javascript" src="resources/js/welcome.js"></script>
+</html>

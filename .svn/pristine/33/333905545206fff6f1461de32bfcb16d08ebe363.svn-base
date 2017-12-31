@@ -1,0 +1,202 @@
+/*
+ * 
+ * */
+
+package dnb.atm.dao.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import dnb.atm.dao.WelcomeDao;
+import dnb.atm.model.CustomerModel;
+import dnb.atm.model.TransactionModel;
+import dnb.atm.utils.Constants;
+
+@Component
+public class WelcomeDaoImpl implements WelcomeDao {
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	@Value("${dnb.gcs.sql.updateAccountTbl}")
+	private String updateAccount;
+	@Value("${dnb.gcs.sql.updateBalanceWithMinus}")
+	private String updateBalanceWithMinus;
+	@Value("${dnb.gcs.sql.updateBalanceWithSum}")
+	private String updateBalanceWithSum;
+	@Value("${dnb.gcs.sql.getAccountIDWithCondition}")
+	private String getAccountID;
+	@Value("${dnb.gcs.sql.getAccountID}")
+	private String getAccID;
+	@Value("${dnb.gcs.sql.getUserName}")
+	private String getUserName;
+
+	/**
+	 * getMoney
+	 * 
+	 * @param obj
+	 *            CustomerModel
+	 * @param amount
+	 *            int
+	 * @return CustomerModel
+	 * @author duybk.sp
+	 **/
+	public CustomerModel getMoney(CustomerModel obj, int amount) {
+		int result = this.jdbcTemplate.update(this.updateAccount, new Object[] { amount, obj.getAccountID() });
+		if (result == 1) {
+			addInfToTransactionTbl(obj.getAccountID(), amount);
+			obj.setBalance(amount);
+			obj.setFlagTransaction(true);
+		}
+		return obj;
+	}
+
+	/**
+	 * send money from sender to receiver
+	 * 
+	 * @param senderID
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	@Transactional
+	public TransactionModel sendMoney(String senderID, int amount, String receiver) {
+		TransactionModel obj = new TransactionModel();
+		int result_minus = this.jdbcTemplate.update(this.updateBalanceWithMinus, new Object[] { amount, senderID });
+		int result_add = this.jdbcTemplate.update(this.updateBalanceWithSum, new Object[] { amount, receiver });
+		if (result_minus == 1 && result_add == 1) {
+			obj.setMessageTransaction(Constants.SUCCESS_MSG);
+		} else {
+			obj.setMessageTransaction(Constants.FAIL_MSG);
+		}
+		obj.setCurrentPage("sendMoneyPage");
+		return obj;
+	}
+
+	/**
+	 * check is money enough
+	 * 
+	 * @param accountId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @return boolean
+	 * @author lochl.cz
+	 **/
+	public boolean isEnoughMoney(String accountId, int amount) {
+		String accountID = null;
+		boolean isEnough = false;
+		try {
+			accountID = this.jdbcTemplate.queryForObject(this.getAccountID, new Object[] { accountId, amount },
+					String.class);
+			if (accountID.length() > 0) {
+				isEnough = true;
+			}
+		} catch (EmptyResultDataAccessException e) {
+			isEnough = false;
+		}
+		return isEnough;
+	}
+
+	/**
+	 * check is receiver account exist
+	 * 
+	 * @param receiverID
+	 *            String
+	 * @return boolean
+	 * @author lochl.cz
+	 **/
+	public boolean isAccountExist(String receiverID) {
+		String receiver = null;
+		boolean isExist = false;
+		try {
+			receiver = this.jdbcTemplate.queryForObject(this.getAccID, new Object[] { receiverID }, String.class);
+			if (receiver.length() > 0) {
+				isExist = true;
+			}
+		} catch (EmptyResultDataAccessException e) {
+			isExist = false;
+		}
+		return isExist;
+	}
+
+	/**
+	 * Add money to account with specified amount
+	 * 
+	 * @param accountId
+	 * @param amount
+	 * @return String
+	 */
+	public TransactionModel addMoney(String accountId, int amount) {
+		TransactionModel obj = new TransactionModel();
+		int result = 0;
+		result = this.jdbcTemplate.update(this.updateBalanceWithSum, new Integer(amount), accountId);
+		if (result == 1) {
+			obj.setMessageTransaction("You have add success " + amount + " to " + accountId);
+			obj.setReceiverID(accountId);
+		} else {
+			obj.setMessageTransaction("Add money to " + accountId + "failed !");
+		}
+		obj.setCurrentPage("gotoAddMoney");
+		return obj;
+	}
+
+	/**
+	 * store the detail of transaction into database
+	 * 
+	 * @param senderId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @author lochl.cz
+	 **/
+	public void storeTransactionDetail(String senderId, int amount, String receiver) {
+		String sql = "INSERT INTO transactiondetail (Time, AccountId, Description) VALUES (now(),?,?)";
+		String description = "send " + amount + " from " + senderId + " to " + receiver;
+		this.jdbcTemplate.update(sql, new Object[] { senderId, description });
+	}
+
+	/**
+	 * storeTransactionDetail
+	 * 
+	 * @param senderId
+	 *            String
+	 * @param amount
+	 *            int
+	 * @param receiver
+	 *            String
+	 * @author duybk.sp
+	 **/
+	public void addInfToTransactionTbl(String accountID, int amount) {
+		String sql = "INSERT INTO transactiondetail (Time, AccountId, Description) VALUES (now(),?,?)";
+		String description = accountID + " has get " + amount;
+		jdbcTemplate.update(sql, new Object[] { accountID, description });
+	}
+
+	/**
+	 * store the detail of transaction into database
+	 * 
+	 * @param receiver
+	 *            String
+	 * @return String
+	 * @author lochl.cz
+	 **/
+	public String getNameUser(String receiver) {
+		String username = null;
+		try {
+			username = this.jdbcTemplate.queryForObject(this.getUserName, new Object[] { receiver }, String.class);
+		} catch (EmptyResultDataAccessException e) {
+			username = null;
+		}
+		return username;
+	}
+
+}
